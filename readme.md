@@ -1,5 +1,7 @@
 # Training Content
 
+> Express.js, MongoDB, mongoose, jwt, bcrypt
+
 ### 1. Express.js 설치
 
 ### 2. MongoDB 세팅
@@ -51,12 +53,27 @@
 
 ### 9. 인증 기능 Authentication
 
-- cookie에 저장된
+- cookie에 저장된 token을 가지고 로그인 된 상태인지 확인 하는방법
+- auth.js 미들웨어 추가 / 인증상태 확인 필요시 끼워넣기
+
+### 10. 로그아웃
+
+- 현재 로그인된 유저에 해당하는 DB 토큰을 삭제
+- `mongoose` - `findOneAndUpdate` api 사용
+- auth.js 미들웨어 끼워넣기
 
 ### Questions
 
-1. Mysql 과 mongoDB 차이점은?
+- Mysql 과 mongoDB 차이점은?
 
-2. 쿠키, 로컬스토리지, 세션에 토큰저장 각 장단점?
+  > https://sjh836.tistory.com/98 > https://siyoon210.tistory.com/130
 
-3. User.js 에서는 Arrow 함수를 쓰면 this 참조 에러가 난다 확인해보자!
+- 쿠키, 로컬스토리지, 세션에 토큰저장 각 장단점?
+
+  > `cookies는 더 작고 모든 HTTP 요청과함께 서버 정보를 다시 전달해주지만 LocalStorage는 더 크고 클라이언트 측에 정보를 보유할 수 있습니다.` ...?
+
+- User.js 에서는 Arrow 함수를 쓰면 this 참조 에러가 난다 확인해보자!
+
+- token에 유효기간은 어떻게 설정하려나?
+
+- Promise 형태로 코드를 바꿔보면 어떠려나?

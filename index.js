@@ -102,6 +102,23 @@ app.get("/api/users/auth", auth, (req, res) => {
   });
 });
 
+// Logout
+// 쿠키 DB 토큰 전부 삭제
+app.get("/api/users/logout", auth, (req, res) => {
+  User.findOneAndUpdate({ _id: req.user._id }, { token: "" }, (err, user) => {
+    if (err) {
+      return res.json({
+        logoutSuccess: false,
+        error: err
+      });
+    } else {
+      res.status(200).send({
+        logoutSuccess: true
+      });
+    }
+  });
+});
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });

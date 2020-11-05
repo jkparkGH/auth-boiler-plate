@@ -11,6 +11,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 
 const { auth } = require("./middleware/auth");
+const jwt = require("jsonwebtoken");
 
 app.use(bodyParser.urlencoded({ extended: true })); // application/x-www-form-urlencoded 가져오기
 app.use(bodyParser.json()); // application/json 가져오기
@@ -36,7 +37,13 @@ app.get("/", (req, res) => {
 
 // register
 app.post("/api/users/register", (req, res) => {
-  const userMongooseModel = new User(req.body);
+  console.log("# req.body: ", req.body);
+  const crrData = {
+    ...req.body,
+    password: jwt.verify(req.body.password, keyString.clientPassword).password
+  };
+  console.log("# crrData: ", crrData);
+  const userMongooseModel = new User(crrData);
   userMongooseModel.save((err, userInfo) => {
     if (err) {
       console.log(err);
@@ -64,27 +71,31 @@ app.post("/api/users/login", (req, res) => {
         error: err
       });
     } else {
-      userInfo.comparePassword(req.body.password, (err, isMatched) => {
-        if (!isMatched) {
-          return res.json({
-            loginSuccess: false,
-            message: "비밀번호가 일치하지 않습니다",
-            error: err
-          });
-        } else {
-          userInfo.generateToken((err, user) => {
-            if (err) {
-              return res.status(400).send(err);
-            } else {
-              // 토큰을 사용자 side에 저장해두어야 함
-              res.cookie("__x_auth", user.token).status(200).json({
-                loginSuccess: true,
-                userId: user._id
-              });
-            }
-          });
+      console.log(jwt.verify(req.body.password, keyString.clientPassword));
+      userInfo.comparePassword(
+        jwt.verify(req.body.password, keyString.clientPassword).password,
+        (err, isMatched) => {
+          if (!isMatched) {
+            return res.json({
+              loginSuccess: false,
+              message: "비밀번호가 일치하지 않습니다",
+              error: err
+            });
+          } else {
+            userInfo.generateToken((err, user) => {
+              if (err) {
+                return res.status(400).send(err);
+              } else {
+                // 토큰을 사용자 side에 저장해두어야 함
+                res.cookie("__x_auth", user.token).status(200).json({
+                  loginSuccess: true,
+                  userId: user._id
+                });
+              }
+            });
+          }
         }
-      });
+      );
     }
   });
 });

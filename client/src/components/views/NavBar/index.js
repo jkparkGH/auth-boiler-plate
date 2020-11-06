@@ -1,29 +1,37 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { logoutUser } from "../../../_actions/modules/user_actions";
+import { logoutUser } from "../../../_actions/user";
+import { store } from "../../../_store";
+function NavBar() {
+  const state = store.getState();
 
-function NavBar(props) {
   const style = {
     container: {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
       width: "100%",
-      height: "10vh",
-      listStyle: "none"
+      height: "7vh",
+      listStyle: "none",
+      margin: 0,
+      padding: 0
     },
     list: {
-      padding: "20px"
+      padding: "0 10px"
     }
   };
   const dispatch = useDispatch();
   const onLogoutHandler = () => {
     dispatch(logoutUser()).then((res) => {
-      if (res.data.logoutSuccess) {
-        props.history.push("/");
+      console.log("logout res.payload", res.payload);
+      if (res.payload.logoutSuccess) {
       }
     });
+  };
+
+  const onCheckState = () => {
+    console.log("### state :", state.User.userData);
   };
   const renderingList = [
     <Link to="/">Landing</Link>,
@@ -38,7 +46,8 @@ function NavBar(props) {
       onClick={onLogoutHandler}
     >
       Logout
-    </button>
+    </button>,
+    <button onClick={onCheckState}>checkState</button>
   ];
 
   const liElements = renderingList.map((item, index) => {

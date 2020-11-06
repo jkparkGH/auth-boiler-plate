@@ -1,13 +1,13 @@
 import { React, useState } from "react";
 import { useDispatch } from "react-redux";
-
+import { withRouter } from "react-router-dom";
 import passwordToToken from "../../../utils/passwordToToken";
 import {
   registerUser
   // loginUser
-} from "../../../_actions/modules/user_actions";
+} from "../../../_actions/user";
 
-function RegisterPage(props) {
+function RegisterPage({ history }) {
   const dispatch = useDispatch();
   const [Name, setName] = useState("");
   const [Email, setEmail] = useState("");
@@ -61,7 +61,7 @@ function RegisterPage(props) {
     };
     dispatch(registerUser(reqData)).then((res) => {
       if (res.payload.success) {
-        props.history.push("/login");
+        history.push("/login");
       }
     });
   };
@@ -105,4 +105,4 @@ function RegisterPage(props) {
   );
 }
 
-export default RegisterPage;
+export default withRouter(RegisterPage);

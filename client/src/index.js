@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import { applyMiddleware, createStore } from "redux";
 import promiseMiddleware from "redux-promise";
 import ReduxThunk from "redux-thunk";
-import Reducer from "./_reducers";
+import { Reducer } from "./_reducers";
 import "./assets/scss/index.css";
 import "antd/dist/antd.css";
 

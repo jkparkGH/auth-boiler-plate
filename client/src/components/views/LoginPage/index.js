@@ -1,9 +1,10 @@
 import { React, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../../../_actions/modules/user_actions";
+import { withRouter } from "react-router-dom";
+import { loginUser } from "../../../_actions/user";
 import passwordToToken from "../../../utils/passwordToToken";
 
-const LoginPage = (props) => {
+const LoginPage = ({ history }) => {
   const dispatch = useDispatch();
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
@@ -26,7 +27,7 @@ const LoginPage = (props) => {
 
     dispatch(loginUser(reqData)).then((res) => {
       if (res.payload.loginSuccess) {
-        props.history.push("/");
+        history.push("/");
       }
     });
   };
@@ -62,4 +63,4 @@ const LoginPage = (props) => {
   );
 };
 
-export default LoginPage;
+export default withRouter(LoginPage);

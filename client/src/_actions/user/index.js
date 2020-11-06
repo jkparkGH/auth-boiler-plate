@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LOGIN_USER, LOGOUT_USER, REGISTER_USER } from "../types";
+import { AUTH_USER, LOGIN_USER, LOGOUT_USER, REGISTER_USER } from "./types";
 
 export const loginUser = (reqUserData) => {
   const request = axios.post("/api/users/login", reqUserData).then((res) => {
@@ -33,6 +33,18 @@ export const registerUser = (reqUserData) => {
 
   return {
     type: REGISTER_USER,
+    payload: request
+  };
+};
+
+export const authUser = () => {
+  const request = axios.get("/api/users/auth").then((res) => {
+    console.log(`##  user_actions _ ${AUTH_USER} : `, res.data);
+    return res.data;
+  });
+
+  return {
+    type: AUTH_USER,
     payload: request
   };
 };

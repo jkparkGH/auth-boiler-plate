@@ -1,26 +1,106 @@
-import { React, useEffect } from "react";
-import axios from "axios";
-import passwordToToken from "../../../utils/jwt";
+import { React, useState } from "react";
+import { useDispatch } from "react-redux";
 
-function RegisterPage() {
-  const register = () => {
-    if (true) return;
-    axios
-      .post("/api/users/register", {
-        email: "jake10@gmail.com",
-        password: passwordToToken("jake1234!"),
-        name: "jakekk"
-      })
-      .then((res) => {
-        console.log(res);
-      });
+import passwordToToken from "../../../utils/passwordToToken";
+import {
+  registerUser,
+  loginUser
+} from "../../../_actions/modules/user_actions";
+
+function RegisterPage(props) {
+  const dispatch = useDispatch();
+  const [Name, setName] = useState("");
+  const [Email, setEmail] = useState("");
+  const [Password, setPassword] = useState("");
+  const [PasswordConfirm, setPasswordConfirm] = useState("");
+
+  const onNameHandler = (e) => {
+    setName(e.currentTarget.value);
+  };
+
+  const onEmailHandler = (e) => {
+    setEmail(e.currentTarget.value);
+  };
+
+  const onPasswordHandler = (e) => {
+    setPassword(e.currentTarget.value);
+  };
+
+  const onPasswordConfirmHandler = (e) => {
+    setPasswordConfirm(e.currentTarget.value);
+  };
+
+  const validationUserData = () => {
+    if (!Name) {
+      alert("이름을 입력해 주세요");
+      return false;
+    } else if (!Email) {
+      alert("이메일을 입력해 주세요");
+      return false;
+    } else if (!Password) {
+      alert("비밀번호를을 입력해 주세요");
+      return false;
+    } else if (!PasswordConfirm) {
+      alert("비밀번호 확인을 입력해 주세요");
+      return false;
+    } else if (Password !== PasswordConfirm) {
+      alert("비밀번호가 일치하지 않습니다");
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  const onRegisterSubmitHandler = (e) => {
+    e.preventDefault();
+    if (!validationUserData()) return;
+    const reqData = {
+      name: Name,
+      email: Email,
+      password: passwordToToken(Password)
+    };
+    dispatch(registerUser(reqData)).then((res) => {
+      if (res.payload.success) {
+        props.history.push("/login");
+      }
+    });
   };
   return (
-    <div>
-      RegisterPage
-      <button type="button" onClick={register}>
-        register
-      </button>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+        height: "100vh"
+      }}
+    >
+      <form
+        style={{
+          display: "flex",
+          flexDirection: "column"
+        }}
+        onSubmit={onRegisterSubmitHandler}
+      >
+        <label>Name</label>
+        <input type="text" value={Name} onChange={onNameHandler} />
+
+        <label>Email</label>
+        <input type="email" value={Email} onChange={onEmailHandler} />
+
+        <label>Password</label>
+        <input type="password" value={Password} onChange={onPasswordHandler} />
+
+        <label>Password confirm</label>
+        <input
+          type="password"
+          value={PasswordConfirm}
+          onChange={onPasswordConfirmHandler}
+        />
+        <button type="submit" style={{ marginTop: "12px" }}>
+          Register
+        </button>
+      </form>
     </div>
   );
 }

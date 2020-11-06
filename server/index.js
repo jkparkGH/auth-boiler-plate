@@ -47,11 +47,11 @@ app.post("/api/users/register", (req, res) => {
   userMongooseModel.save((err, userInfo) => {
     if (err) {
       console.log(err);
-      return res.json({ success: false, error: err });
+      return res.status(400).json({ registerSuccess: false, error: err });
     } else {
       console.log(userInfo);
       return res.status(200).json({
-        success: true,
+        registerSuccess: true,
         result: userInfo
       });
     }
@@ -65,7 +65,7 @@ app.post("/api/users/login", (req, res) => {
   // 3. 비밀번호 일치 하는 경우, 인증 토큰 생성
   User.findOne({ email: req.body.email }, (err, userInfo) => {
     if (!userInfo) {
-      return res.json({
+      return res.status(400).json({
         loginSuccess: false,
         message: "Email 정보가 존재하지 않습니다",
         error: err
@@ -118,7 +118,7 @@ app.get("/api/users/auth", auth, (req, res) => {
 app.get("/api/users/logout", auth, (req, res) => {
   User.findOneAndUpdate({ _id: req.user._id }, { token: "" }, (err, user) => {
     if (err) {
-      return res.json({
+      return res.status(400).json({
         logoutSuccess: false,
         error: err
       });

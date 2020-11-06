@@ -3,8 +3,8 @@ import { useDispatch } from "react-redux";
 
 import passwordToToken from "../../../utils/passwordToToken";
 import {
-  registerUser,
-  loginUser
+  registerUser
+  // loginUser
 } from "../../../_actions/modules/user_actions";
 
 function RegisterPage(props) {

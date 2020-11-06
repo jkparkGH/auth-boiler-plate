@@ -11,7 +11,7 @@ let auth = function (req, res, next) {
     }
     if (!user) {
       console.log(user);
-      return res.json({
+      return res.status(401).json({
         isAuth: false,
         error: true
       });

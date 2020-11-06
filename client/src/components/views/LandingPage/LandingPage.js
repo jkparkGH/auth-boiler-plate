@@ -12,7 +12,14 @@ function LandingPage() {
         height: "100vh"
       }}
     >
-      <h2>LandingPage</h2>
+      <h2
+        style={{
+          display: "flex",
+          flexDirection: "column"
+        }}
+      >
+        LandingPage
+      </h2>
     </div>
   );
 }

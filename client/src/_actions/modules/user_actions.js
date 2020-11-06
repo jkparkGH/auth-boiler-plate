@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LOGIN_USER, REGISTER_USER } from "../types";
+import { LOGIN_USER, LOGOUT_USER, REGISTER_USER } from "../types";
 
 export const loginUser = (reqUserData) => {
   const request = axios.post("/api/users/login", reqUserData).then((res) => {
@@ -9,6 +9,18 @@ export const loginUser = (reqUserData) => {
 
   return {
     type: LOGIN_USER,
+    payload: request
+  };
+};
+
+export const logoutUser = () => {
+  const request = axios.get("/api/users/logout").then((res) => {
+    console.log(`## user_actions _ ${LOGOUT_USER} : `, res.data);
+    return res.data;
+  });
+
+  return {
+    type: LOGOUT_USER,
     payload: request
   };
 };

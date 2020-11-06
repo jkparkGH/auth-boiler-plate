@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from "react";
-import passwordToToken from "../../../utils/passwordToToken";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../../_actions/modules/user_actions";
+import passwordToToken from "../../../utils/passwordToToken";
 
 const LoginPage = (props) => {
   const dispatch = useDispatch();
@@ -19,12 +19,12 @@ const LoginPage = (props) => {
   const onSubmitHandler = (e) => {
     e.preventDefault();
 
-    const body = {
+    const reqData = {
       email: Email,
       password: passwordToToken(Password)
     };
 
-    dispatch(loginUser(body)).then((res) => {
+    dispatch(loginUser(reqData)).then((res) => {
       if (res.payload.loginSuccess) {
         props.history.push("/");
       }

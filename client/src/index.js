@@ -7,7 +7,7 @@ import { applyMiddleware, createStore } from "redux";
 import promiseMiddleware from "redux-promise";
 import ReduxThunk from "redux-thunk";
 import { Reducer } from "./_reducers";
-import "./assets/scss/index.css";
+import "./assets/css/index.css";
 import "antd/dist/antd.css";
 
 const createStoreWidthMiddleware = applyMiddleware(

@@ -1,11 +1,17 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { Link } from "react-router-dom";
 import { logoutUser } from "../../../_actions/user";
 import { store } from "../../../_store";
+
 function NavBar() {
   const state = store.getState();
-
+  const { isAuth } = useSelector(
+    (state) => ({
+      isAuth: state.User.isAuth
+    }),
+    shallowEqual
+  );
   const style = {
     container: {
       display: "flex",
@@ -24,40 +30,51 @@ function NavBar() {
   const dispatch = useDispatch();
   const onLogoutHandler = () => {
     dispatch(logoutUser()).then((res) => {
-      console.log("logout res.payload", res.payload);
-      if (res.payload.logoutSuccess) {
-      }
+      console.log("# dispatch logoutUser res.payload # ", res.payload);
+      // if (res.payload.logoutSuccess) {}
     });
   };
 
   const onCheckState = () => {
-    console.log("### state :", state.User.userData);
+    console.log("### state :", state);
+    console.log("### isAuth :", isAuth);
   };
+
   const renderingList = [
-    <Link to="/">Landing</Link>,
-    <Link to="/login">Login</Link>,
-    <Link to="/register">Register</Link>,
-    <button
-      style={{
-        display: "flex",
-        flexDirection: "column"
-      }}
-      type="button"
-      onClick={onLogoutHandler}
-    >
-      Logout
-    </button>,
-    <button onClick={onCheckState}>checkState</button>
+    { auth: null, tag: <Link to="/">Landing</Link> },
+    { auth: false, tag: <Link to="/login">Login</Link> },
+    { auth: false, tag: <Link to="/register">Register</Link> },
+    {
+      auth: true,
+      tag: (
+        <button
+          style={{
+            display: "flex",
+            flexDirection: "column"
+          }}
+          type="button"
+          onClick={onLogoutHandler}
+        >
+          Logout
+        </button>
+      )
+    },
+    { auth: null, tag: <button onClick={onCheckState}>checkState</button> }
   ];
 
-  const liElements = renderingList.map((item, index) => {
-    return (
-      <li key={`renderingList ${index}`} style={style.list}>
-        {item}
-      </li>
-    );
-  });
-  return <ul style={style.container}>{liElements}</ul>;
+  return (
+    <ul style={style.container}>
+      {renderingList.map((item, index) => {
+        return (
+          (item.auth === null || item.auth === isAuth) && (
+            <li key={`renderingList ${index}`} style={style.list}>
+              {item.tag}
+            </li>
+          )
+        );
+      })}
+    </ul>
+  );
 }
 
 export default NavBar;

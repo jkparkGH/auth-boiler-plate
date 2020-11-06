@@ -10,7 +10,6 @@ let auth = function (req, res, next) {
       throw err;
     }
     if (!user) {
-      console.log(user);
       return res.status(401).json({
         isAuth: false,
         error: true

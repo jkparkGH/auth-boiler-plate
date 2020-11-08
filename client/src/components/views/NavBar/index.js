@@ -2,10 +2,9 @@ import React from "react";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { Link } from "react-router-dom";
 import { logoutUser } from "../../../_actions/user";
-import { store } from "../../../_store";
 
 function NavBar() {
-  const state = store.getState();
+  // const state = store.getState();
   const { isAuth } = useSelector(
     (state) => ({
       isAuth: state.User.isAuth
@@ -36,7 +35,7 @@ function NavBar() {
   };
 
   const onCheckState = () => {
-    console.log("### state :", state);
+    // console.log("### state :", state);
     console.log("### isAuth :", isAuth);
   };
 
